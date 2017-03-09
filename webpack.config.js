@@ -1,6 +1,7 @@
 let path = require("path");         // 路径
 let webpack = require("webpack");   // webpack 打包文件
 let htmlWebpackPlugin = require("html-webpack-plugin"); // 自动产出html的模板文件
+let openBrowserPlugin = require('open-browser-webpack-plugin'); //  webpack 启动后自动打开浏览
 
 
 let config = {
@@ -17,7 +18,7 @@ let config = {
     devServer:{
         contentBase:"dist",
         inline:true,
-        port:8080,
+        port:8089,
         stats:{
             colors:true
         }
@@ -37,13 +38,13 @@ let config = {
             {
                 // 配置css加载的文件
                 test:/\.css$/,
-                loader:"style!css",
+                loader:"style-loader!css-loader",
                 include:path.resolve(__dirname, "src")
             },
             {
                 // 配置css加载的文件
                 test:/\.less$/,
-                loader:"style!css!less",
+                loader:"style-loader!css-loader!less-loader",
                 include:path.resolve(__dirname, "src")
             }
         ]
@@ -56,7 +57,11 @@ let config = {
             title:"搭建前端工作流",
             // 做为一个模版文件
             template:"./src/index.html"
-        })
+        }),
+
+        new openBrowserPlugin({
+             url: 'http://localhost:8089'
+         })
     ]
 
 }
